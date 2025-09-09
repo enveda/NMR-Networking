@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "nmr-networking"
+version = "0.1.0"
+description = "HSQC molecular networking, annotation, and re-ranking"
+authors = ["Enveda"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "nmr_networking", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+numpy = "^1.24"
+pandas = "^2.0"
+scipy = "^1.10"
+networkx = "^3.0"
+tqdm = "^4.65"
+rich = "^13.0"
+pyarrow = "^14.0"
+rdkit = ">=2024.03"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+
+[tool.poetry.scripts]
+nmr-ablate = "nmr_networking.annotate.ablate_dataset:main"
+nmr-rerank = "nmr_networking.annotate.annotation_reranking:main"
+nmr-efficiency = "nmr_networking.annotate.efficiency_lookup:main"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+

@@ -1,0 +1,65 @@
+HSQC Molecular Networking License Terms (GPL v3)
+
+IMPORTANT NOTE:
+This HSQC Molecular Networking software is licensed under the terms of the GNU General Public License, version 3 (GPLv3). This license guarantees users the freedom to run, study, share, and modify the software, while ensuring these freedoms remain for all derivative works. Any distribution, modification, or use of this software must comply with the GPLv3.
+
+Preamble
+
+A. The HSQC Molecular Networking software ("SOFTWARE") has been developed to support scientific and research activities. It is made available in source code form for download in the HSQC Molecular Networking GitHub repository for use in the Python environment.
+
+B. In line with the principles of free and open-source software, the SOFTWARE is licensed under GPLv3, which allows use, modification, and redistribution by anyone, for both academic and commercial purposes, provided that all conditions of GPLv3 are met.
+
+1. License Grant
+
+Under the GPLv3, you are granted the following freedoms:
+
+Freedom to Use: You may run the SOFTWARE for any purpose, without restriction.
+
+Freedom to Study and Modify: You may access the source code, study how it works, and adapt it to your needs.
+
+Freedom to Share: You may redistribute copies of the SOFTWARE, in either source code or compiled form.
+
+Freedom to Share Modified Versions: You may distribute modified versions of the SOFTWARE, provided that:
+
+Your modifications are clearly marked.
+
+You also license your modifications under GPLv3.
+
+You provide access to the source code of your modified version.
+
+2. Conditions and Limitations
+
+The GPLv3 requires the following:
+
+Copyleft Requirement: Any derivative works or redistributions must also be licensed under GPLv3. You may not impose further restrictions.
+
+Source Code Availability: If you distribute the SOFTWARE (original or modified), you must make the corresponding source code available.
+
+No Tivoization: You may not use hardware restrictions to prevent others from running modified versions of the SOFTWARE.
+
+Patent Protection: Contributors provide a patent license to users. You may not enter into patent agreements that make the SOFTWARE effectively proprietary.
+
+No DRM: The SOFTWARE may not be used to enforce Digital Rights Management (DRM) restrictions that limit user freedoms.
+
+3. Intellectual Property Rights
+
+Ownership: Copyright remains with the original authors and contributors of the SOFTWARE.
+
+Attribution: You must preserve copyright notices, license notices, and disclaimers in all redistributions.
+
+Contributions: Any contributions you make and distribute as part of the SOFTWARE must also be licensed under GPLv3.
+
+4. Warranty Disclaimer and Liability
+
+The SOFTWARE is provided “as-is”, without any warranty, express or implied.
+
+The authors and contributors shall not be liable for any damages, including but not limited to loss of data, loss of profits, or business interruption, arising from the use of the SOFTWARE.
+
+5. Governing Law
+
+The GPLv3 is an international license and is not bound to a specific jurisdiction. Legal disputes related to this license shall be interpreted in accordance with GPLv3 terms as published by the Free Software Foundation.
+
+6. Full License Text
+
+The complete GPLv3 license text is available here:
+https://www.gnu.org/licenses/gpl-3.0.html
