@@ -53,7 +53,7 @@ NMR-Networking provides an end-to-end pipeline for HSQC-based molecular networki
   - Diagnostics: average and maximum improvements across Hybrid/Tanimoto/MCS for top-k.
 
 ## Data Availablility
-Prebuilt networks, complete simulated library (MestreNova, n = 373k), sample annotations are available at XXXXXX ZENODO
+Prebuilt networks, complete simulated library (MestreNova, n = 373k), sample annotations are available at https://zenodo.org/records/17081209
 
 Experimental HSQC Spectra from the Human Metabolome Database (HMDB) cannot be shared with this study (with their associated annotation and reranking objects), but they can freely accessed at https://www.hmdb.ca/downloads  
 
