@@ -3,11 +3,11 @@
 # NMR-Networking
 
 This is a coding package to support the implementation of HSQC Molecular Networking as described in the paper
-'Structure Characterization with NMR Molecular Networking'. If you use any of the resources described in this work, please cite out paper at  "INSERT CITATION HERE"
+'Structure Characterization with NMR Molecular Networking'. If you use any of the resources described in this work, please cite out paper which is currently available as a preprint{https://chemrxiv.org/engage/chemrxiv/article-details/68c0a2679008f1a46773dc60}
 
 ## Install
 ### Prerequisites
-- Python 3.9–3.12
+- Python 3.9–3.12 
 - OS: Linux/macOS recommended
 
 ### Poetry-based install:
