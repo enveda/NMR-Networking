@@ -7,7 +7,7 @@ This is a coding package to support the implementation of HSQC Molecular Network
 
 ## Install
 ### Prerequisites
-- Python 3.9–3.12 (3.13 under validation; use 3.12 for now)
+- Python 3.9–3.12
 - OS: Linux/macOS recommended
 
 ### Poetry-based install:
