@@ -3,7 +3,7 @@
 # NMR-Networking
 
 This is a coding package to support the implementation of HSQC Molecular Networking as described in the paper
-'Structure Characterization with NMR Molecular Networking'. If you use any of the resources described in this work, please cite out paper which is currently available as a [preprint]{https://chemrxiv.org/engage/chemrxiv/article-details/68c0a2679008f1a46773dc60}
+'Structure Characterization with NMR Molecular Networking'. If you use any of the resources described in this work, please cite out paper which is currently available as a [preprint](https://chemrxiv.org/engage/chemrxiv/article-details/68c0a2679008f1a46773dc60)
 
 ## Install
 ### Prerequisites
