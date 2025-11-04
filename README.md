@@ -7,7 +7,7 @@ This is a coding package to support the implementation of HSQC Molecular Network
 
 ## Install
 ### Prerequisites
-- Python 3.10–3.13
+- Python 3.9–3.12 (3.13 under validation; use 3.12 for now)
 - OS: Linux/macOS recommended
 
 ### Poetry-based install:
@@ -20,6 +20,7 @@ This is a coding package to support the implementation of HSQC Molecular Network
      ```
 2) Create the virtualenv and install deps:
    ```bash
+  poetry env use 3.12
    poetry install
    ```
 3) Run tests to validate the environment:
