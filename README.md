@@ -20,8 +20,8 @@ This is a coding package to support the implementation of HSQC Molecular Network
      ```
 2) Create the virtualenv and install deps:
    ```bash
-  poetry env use 3.12
-   poetry install
+      poetry env use 3.12
+      poetry install
    ```
 3) Run tests to validate the environment:
    ```bash
