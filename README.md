@@ -6,7 +6,7 @@ This is a coding package to support the implementation of HSQC Molecular Network
 'Structure Characterization with NMR Molecular Networking'. If you use any of the resources described in this work, please cite out [paper](https://doi.org/10.1038/s42004-025-01839-x).
 
 ## Citation
-> Stienstra, C. M., Song, J., Healey, D., Voronov, G., Patel, A., Macherla, V., et al. (2025). Structure Characterization with NMR Molecular Networking. Communications Chemistry [DOI](https://doi.org/10.1038/s42004-025-01839-x).
+> Stienstra, C. M., Song, J., Healey, D., Voronov, G., Patel, A., Macherla, V., et al. (2026). Structure Characterization with NMR Molecular Networking. Communications Chemistry, 9: 28 [DOI](https://doi.org/10.1038/s42004-025-01839-x).
 
 ## Install
 ### Prerequisites
