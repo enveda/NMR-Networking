@@ -2,12 +2,12 @@
 Example: prioritizing the downfield "zone 1" region when matching HSQC spectra.
 =================================================================================
 
-Zone 1 = the left-lower quadrant of an HSQC plot: HIGH 1H (downfield, ~5-10 ppm)
-AND HIGH 13C (~100-200 ppm). It holds the aromatic / olefinic / heteroaromatic
-peaks, which are far fewer but far more diagnostic than the crowded aliphatic
-region. The `modified_hungarian_zone1` distance makes matches in this region
-dominate the score, so a query is ranked mainly by how well its diagnostic
-downfield peaks line up.
+Zone 1 = the left-lower quadrant of an HSQC plot: downfield of 3 ppm (1H) and
+50 ppm (13C). It holds the aromatic / olefinic / heteroaromatic and oxygenated
+(O-CH, anomeric) peaks, which are more diagnostic than the crowded aliphatic
+region below those thresholds. The `modified_hungarian_zone1` distance makes
+matches in this region dominate the score, so a query is ranked mainly by how
+well its diagnostic downfield peaks line up.
 
 How it works
 ------------
@@ -24,10 +24,14 @@ the same numeric scale regardless of the weighting.
     zone_combine 'avg'     -> z = 0.5*(h + c)   (high in EITHER dim counts)
                  'product' -> z = h * c         (strict quadrant: BOTH high)
 
-The registered `modified_hungarian_zone1` defaults to zone_floor=0.0,
-zone_gamma=2.0, zone_combine='avg' -- true domination. On a 500k-compound
-reference library this gives the ~18% of peaks that sit in zone 1 roughly 63%
-of the total scoring influence.
+The registered `modified_hungarian_zone1` defaults to zone_floor=0.03,
+zone_gamma=2.0, zone_combine='avg', with the ramp anchored to H_range=(3, 10)
+and C_range=(50, 200) -- i.e. zone 1 is everything downfield of 3 ppm (1H) and
+50 ppm (13C). On a 500k-compound reference library the ~42% of peaks in this
+region carry ~80% of the total scoring influence; the sub-threshold aliphatic
+peaks keep the remaining ~20% as a tie-breaker. Lower zone_floor toward 0.0 for
+near-total domination (~99%), or raise it (~0.1 -> ~63%) to give the aliphatic
+region more say.
 
 Run:
     PYTHONPATH=src python examples/zone1_weighting_example.py

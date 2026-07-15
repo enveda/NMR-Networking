@@ -68,7 +68,10 @@ DISTANCE_FUNCTION_PARAMS: Dict[str, Dict[str, Any]] = {
     'modified_hungarian_nn': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0},
     'modified_hungarian_trunc': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0},
     'modified_hungarian_zone1': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0,
-                                 'zone_floor': 0.0, 'zone_gamma': 2.0, 'zone_combine': 'avg'},
+                                 'zone_floor': 0.03, 'zone_gamma': 2.0, 'zone_combine': 'avg',
+                                 # zone 1 = downfield of 3 ppm (1H) and 50 ppm (13C);
+                                 # the weight ramp is anchored to these thresholds.
+                                 'H_range': (3.0, 10.0), 'C_range': (50.0, 200.0)},
     # Legacy aliases
     'Hungarian_Distance': {},
     'hung_norm': {},
