@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Any
+from typing import Callable, Dict, Any, Optional
 
 import numpy as np
 
@@ -41,6 +41,8 @@ DISTANCE_FUNCTION_MAP: Dict[str, Callable[..., float]] = {
     'modified_hungarian_zero': _modified_wrapper('zero'),
     'modified_hungarian_nn': _modified_wrapper('nn'),
     'modified_hungarian_trunc': _modified_wrapper('trunc'),
+    # Zone-1 weighted: downfield (high 1H & 13C) peaks dominate the score
+    'modified_hungarian_zone1': _modified_default,
     # Legacy aliases
     'Hungarian_Distance': _hungarian_wrapper('nn', 'sum'),
     'hung_norm': _hungarian_wrapper('nn', 'mean'),
@@ -65,6 +67,8 @@ DISTANCE_FUNCTION_PARAMS: Dict[str, Dict[str, Any]] = {
     'modified_hungarian_zero': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0},
     'modified_hungarian_nn': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0},
     'modified_hungarian_trunc': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0},
+    'modified_hungarian_zone1': {'sigma_H': 0.01, 'sigma_C': 0.2, 'func_H': 0.5, 'func_C': 2.5, 'penalty_factor': 1.0,
+                                 'zone_floor': 0.0, 'zone_gamma': 2.0, 'zone_combine': 'avg'},
     # Legacy aliases
     'Hungarian_Distance': {},
     'hung_norm': {},
@@ -75,9 +79,30 @@ DISTANCE_FUNCTION_PARAMS: Dict[str, Dict[str, Any]] = {
 }
 
 
+def resolve_distance_params(distance_function: str,
+                            zone_floor: Optional[float] = None,
+                            zone_gamma: Optional[float] = None,
+                            zone_combine: Optional[str] = None) -> Dict[str, Any]:
+    """Return the registry defaults for ``distance_function``, overriding any
+    zone-weighting params that were explicitly supplied (non-``None``).
+
+    Lets a CLI expose ``--zone-floor`` / ``--zone-gamma`` / ``--zone-combine``
+    without hard-coding them: unset flags fall back to the registered defaults.
+    """
+    params = dict(DISTANCE_FUNCTION_PARAMS.get(distance_function, {}))
+    if zone_floor is not None:
+        params['zone_floor'] = zone_floor
+    if zone_gamma is not None:
+        params['zone_gamma'] = zone_gamma
+    if zone_combine is not None:
+        params['zone_combine'] = zone_combine
+    return params
+
+
 __all__ = [
     'DISTANCE_FUNCTION_MAP',
     'DISTANCE_FUNCTION_PARAMS',
+    'resolve_distance_params',
     'calculate_hungarian_distance',
     'modified_hungarian_distance',
     'scaled_modified_hungarian_distance',

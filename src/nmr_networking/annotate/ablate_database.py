@@ -24,6 +24,7 @@ from rdkit.Chem import rdFMCS
 from nmr_networking.similarity import (
     DISTANCE_FUNCTION_MAP as DISTANCE_FUNCTIONS,
     DISTANCE_FUNCTION_PARAMS,
+    resolve_distance_params,
 )
 
 
@@ -177,7 +178,15 @@ def main():
     p.add_argument('--threshold', type=float, default=35.0)
     p.add_argument('-k', type=int, default=5)
     p.add_argument('--rank-by', choices=['hybrid', 'tanimoto', 'mcs'], default='tanimoto')
-    p.add_argument('--distance-function', default='modified_hungarian')
+    p.add_argument('--distance-function', default='modified_hungarian',
+                   help="Use 'modified_hungarian_zone1' to prioritize the downfield (high 1H & 13C) region.")
+    p.add_argument('--zone-floor', type=float, default=None,
+                   help='Zone weighting: weight of top-right/aliphatic peaks (1.0=off, 0.0=zone-1 only). '
+                        'Overrides the distance-function default.')
+    p.add_argument('--zone-gamma', type=float, default=None,
+                   help='Zone weighting: ramp sharpness toward the zone-1 corner (>1 concentrates weight).')
+    p.add_argument('--zone-combine', choices=['avg', 'product'], default=None,
+                   help="Zone weighting: 'avg' (either dim high) or 'product' (strict quadrant, both high).")
     p.add_argument('--out-pkl', required=False, help='Path to write annotation results (pkl)')
     args = p.parse_args()
 
@@ -203,7 +212,12 @@ def main():
         rank_by=args.rank_by,
         k=args.k,
         distance_function=args.distance_function,
-        distance_params=DISTANCE_FUNCTION_PARAMS.get(args.distance_function, {}),
+        distance_params=resolve_distance_params(
+            args.distance_function,
+            zone_floor=args.zone_floor,
+            zone_gamma=args.zone_gamma,
+            zone_combine=args.zone_combine,
+        ),
     )
 
     result = [(args.file_key, exp_smiles, final_df)]

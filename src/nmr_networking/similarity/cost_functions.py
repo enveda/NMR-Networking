@@ -106,7 +106,11 @@ def modified_hungarian_distance(peaks1, peaks2,
                                 sigma_H=0.01, sigma_C=0.2,
                                 func_H=0.5, func_C=2.5,
                                 penalty_factor=1.0,
-                                matching='zero'):
+                                matching='zero',
+                                zone_floor=1.0, zone_gamma=1.0,
+                                zone_combine='avg',
+                                H_range=(1.0, 10.0),
+                                C_range=(0.0, 200.0)):
     """
     Compute an HSQC-spectrum distance & matched fraction under
     three possible assignment schemes:
@@ -115,6 +119,31 @@ def modified_hungarian_distance(peaks1, peaks2,
       - 'trunc':   rectangular Hungarian only (drop extras)
 
     matching : str, one of {'zero','nn','trunc'}
+
+    Zone weighting (optional)
+    -------------------------
+    Each matched pair's penalty is scaled by a position-dependent weight
+    ``w`` before being reduced to a *weighted mean* (``Σ(w·pen) / Σw``).
+    This lets peaks in the downfield "zone 1" (high ¹H *and* high ¹³C —
+    the left-lower quadrant of an HSQC plot) count more toward the score
+    than the crowded aliphatic top-right region, which matters because
+    zone 1 typically holds far fewer, more diagnostic peaks.
+
+    zone_floor : float in [0, 1]
+        Weight given to a top-right (¹H≈min, ¹³C≈min) peak relative to a
+        corner zone-1 peak (weight 1). ``1.0`` disables weighting and
+        reproduces the original behaviour exactly. Lower values suppress
+        the aliphatic region so the fewer zone-1 peaks dominate; e.g.
+        ``0.2`` keeps aliphatic peaks as a tie-breaker at 20% weight.
+    zone_gamma : float
+        Exponent sharpening the ramp toward the corner (``>1`` concentrates
+        weight more tightly on zone 1).
+    zone_combine : {'avg', 'product'}
+        How the normalized ¹H (``h``) and ¹³C (``c``) coordinates combine
+        into the zone score ``z``: ``0.5*(h+c)`` (either dim high counts)
+        or ``h*c`` (a strict quadrant needing both high).
+    H_range, C_range : (min, max)
+        ppm ranges used to normalize ¹H / ¹³C positions into [0, 1].
     """
 
     p1 = np.asarray(peaks1, float)
@@ -193,18 +222,42 @@ def modified_hungarian_distance(peaks1, peaks2,
     else:
         raise ValueError(f"Unknown matching strategy: {matching!r}")
 
-    # 5) compute total penalty & matched count
+    # 5) compute total penalty & matched count, with optional zone weighting
+    H_min, H_max = H_range
+    C_min, C_max = C_range
     total_penalty = 0.0
-    good_matches  = 0
+    good_weight   = 0.0
+    weight_sum    = 0.0
     for i, j in assignments:
         dij = D[i, j]
         pen = dij if dij <= T else dij + penalty_factor
-        total_penalty += pen
-        if dij <= T:
-            good_matches += 1
 
-    distance = total_penalty / denom
-    matched_fraction = good_matches / denom
+        if zone_floor >= 1.0:
+            w = 1.0
+        else:
+            # Use whichever real peak(s) exist (padded 'zero' slots are dummies)
+            hs, cs = [], []
+            if i < n1:
+                hs.append(p1[i, 0]); cs.append(p1[i, 1])
+            if j < n2:
+                hs.append(p2[j, 0]); cs.append(p2[j, 1])
+            H_avg = sum(hs) / len(hs)
+            C_avg = sum(cs) / len(cs)
+            h = min(1.0, max(0.0, (H_avg - H_min) / (H_max - H_min)))
+            c = min(1.0, max(0.0, (C_avg - C_min) / (C_max - C_min)))
+            z = 0.5 * (h + c) if zone_combine == 'avg' else h * c
+            w = zone_floor + (1.0 - zone_floor) * (z ** zone_gamma)
+
+        total_penalty += w * pen
+        weight_sum    += w
+        if dij <= T:
+            good_weight += w
+
+    # Weighted mean keeps the distance on the same scale as the unweighted
+    # form (identical when zone_floor == 1.0, since every w == 1).
+    denom_w = weight_sum if weight_sum > 0 else denom
+    distance = total_penalty / denom_w
+    matched_fraction = good_weight / denom_w
 
     return distance, matched_fraction
 
